@@ -1,0 +1,84 @@
+{{> userHeader}}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>Orders</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#each userOrderdetails}}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="p-3">
+                <div style="background-color: aliceblue; border: 1px solid black; padding: 10px; position: relative;">
+                    <h6>Ordered Date:{{orderdate}}</h6>
+                    <h6>Payment:{{payment}}</h6>
+                    <h6>Email:{{deliverydetails.email}}</h6>
+                    <h6>TotalAmount:{{TotalAmount}}</h6>
+                    <h6>Status:{{status}}</h6>
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+                        <button type="button" class="btn btn-outline-primary btn-view-order mb-2 mb-md-0"
+                            onclick="location.href='/order/{{_id}}'">View Order</button>
+                        {{#if (eq status "Deliverd")}}
+                        <h6 style="color: rgb(97, 239, 27);">Order Delivered</h6>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="p-4" style="margin-top: 10px;">
+                                <form action="/Return/{{_id}}" method="post">
+                                    <input type="text" name="value" value="Cancelled" hidden>
+                                    <button type="submit" class="btn btn-outline-warning">Return Order</button>
+                                </form>
+                            </div>
+                        </div>
+                        {{else}}
+                        {{#if (eq status "Cancelled")}}
+                        <h6 style="color: red;">Order Cancelled</h6>
+                        {{else}}
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="p-4" style="margin-top: 10px;">
+                                <form action="/cancel/{{_id}}" method="post">
+                                    <input type="text" name="value" value="Cancelled" hidden>
+                                    <button type="submit" class="btn btn-outline-danger">Cancel Order</button>
+                                </form>
+                            </div>
+                        </div>
+                        {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<div class="logo-carousel-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="logo-carousel-inner">
+                    <div class="single-logo-item">
+                        <img src="/assets/img/company-logos/1.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="/assets/img/company-logos/2.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="/assets/img/company-logos/3.png" alt="">
+                    </div>
+                    <div class="single-logo-item">
+                        <img src="/assets/img/company-logos/4.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{>userFooter}}

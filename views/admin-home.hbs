@@ -1,0 +1,167 @@
+{{>adminHeader}}
+
+{{!-- <section class="container mt-5">
+    <div class="row my-3">
+        <div class="col-lg-3 p-3 " style="">
+            <div class="dashboard-small-box p-2 " style="border-radius: 15px;">
+                <div class="p-3 icon-border" style="background-color: darkgoldenrod;">
+                    <i class="text-white fs-1 fa-solid fa-sack-dollar"></i>
+                </div>
+                <h6 class="small-box-text fs-4 p-2">Revenue</h6>
+                <h4 class="text-center"></h4>
+            </div>
+        </div>
+        <div class="col-lg-3 p-3 " style="">
+            <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+                <div class="p-3 icon-border" style="background-color: darkslategray;">
+                    <i class="text-white fs-1 fa-solid fa-users"></i>
+                </div>
+                <div class="d-block">
+                    <h6 class="small-box-text fs-4 p-2">Users</h6>
+                   <h4 class="text-center">{{userCount}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 p-3 " style="">
+            <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+                <div class="p-3 icon-border" style="background-color: crimson;">
+                    <i class="text-white fs-1 fa-solid fa-bag-shopping"></i>
+                </div>
+                <div class="d-block">
+                    <h6 class="small-box-text fs-4 p-2">Orders</h6>
+                   <h4 class="text-center">{{orderCount}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 p-3 " style="">
+            <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+                <div class="p-3 icon-border" style="background-color: darkred;">
+                    <i class="text-white fs-1 fa-solid fa-truck-fast"></i>
+                </div>
+               <div class="d-block">
+                    <h6 class="small-box-text fs-4 p-2">Products</h6>
+                   <h4 class="text-center">{{productCount}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container ">
+    <div class="row d-flex m-0 justify-content-center">
+        <div id="top_x_div" class="m-0" style="width:100vw; height: 50vh;"></div>
+    </div>
+    
+</section>
+<section class="container mt-5">
+    <div class="row d-flex m-0 justify-content-center">
+         <div id="table_div"></div>
+    </div>
+    
+</section> --}}
+
+
+   <link rel="stylesheet" href="/stylesheets/dashboard.css">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<section class="container ">
+  <div class="row my-3">
+    <div class="col-lg-3 p-3 " style="">
+      <div class="dashboard-small-box p-2 " style="border-radius: 15px;">
+        <div class="p-3 icon-border" style="background-color: #82AE46;">
+          <i class="text-white fs-1 fa-solid fa-sack-dollar"></i>
+        </div>
+        <div>
+          <h6 class="small-box-text fs-4 p-2">Revenue</h6>
+          <h5 class="text-center">{{revenue}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 p-3 " style="">
+      <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+        <div class="p-3 icon-border" style="background-color: #7294db;">
+          <i class="text-white fs-1 fa-solid fa-users"></i>
+        </div>
+        <div class="d-block">
+          <h6 class="small-box-text fs-4 p-2">Users</h6>
+          <h5 class="text-center">{{userCount}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 p-3 " style="">
+      <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+        <div class="p-3 icon-border" style="background-color: #e6d759;">
+          <i class="text-white fs-1 fa-solid fa-bag-shopping"></i>
+        </div>
+        <div>
+          <h6 class="small-box-text fs-4 p-2">Orders</h6>
+          <h5 class="text-center">{{orederCount}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 p-3 " style="">
+      <div class="dashboard-small-box p-2" style="border-radius: 15px;">
+        <div class="p-3 icon-border" style="background-color: #d34634;">
+          {{!-- <i class="text-white fs-1 fa-solid fa-trash"></i> --}}
+          <i class="text-white fs-1 fa-solid fa-cart-shopping"></i>
+        </div>
+        <div>
+          <p class="small-box-text fs-4 ps-2">Products</p>
+          <h5 class="text-center">{{productCount}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="container ">
+  <div class="row d-flex m-0 justify-content-center">
+    <div id="top_x_div" class="m-0" style="width:100vw; height: 50vh;"></div>
+  </div>
+</section>
+{{!-- <section class="container mt-5 mb-5">
+  <div class="row d-flex m-0 justify-content-center">
+    <div id="table_div"></div>
+  </div>
+</section> --}}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script >
+  $.ajax({
+    url:"/admin/getChart-Data",
+    method:"GET",
+    success:(revenue)=>{
+      const Data = [['Months','revenue']]
+      const Month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+      revenue.forEach(value => {
+        Data.push([Month[(value._id)-1],value.revenue])
+      })
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      window.onresize = drawStuff;
+        function drawStuff() {
+        var data = new google.visualization.arrayToDataTable(Data);
+
+        var options = {
+         
+          legend: { position: 'none' },
+          chart: {
+            title: 'Chess opening moves',
+            subtitle: 'popularity by percentage' },
+          axes: {
+            x: {
+              0: { side: 'top', label: 'White to move'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      };
+    }
+  })
+  
+
+</script>

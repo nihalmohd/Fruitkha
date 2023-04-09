@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Fruitkha</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/user login/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/user login/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/ser login/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/user login/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/user login/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/user login/css/main.css">
+<!--===============================================================================================-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+			<div class="wrap-login100" style="background: -webkit-linear-gradient(top, #000000, #000000);">
+				<form class="login100-form" oninput="loginerrdisplay()" onsubmit="return loginvalidation()" action="/Post/otp" method="post" id="login_form" name="login" >
+					<span class="login100-form-logo">
+						<i class="zmdi zmdi-landscape"></i>
+					</span>
+
+					<span class="login100-form-title p-b-34 p-t-27">
+						Forget Password
+					</span>
+
+					{{!-- <div class="wrap-input100 " data-validate = "Enter Email">
+						<input class="input100" type="email" name="email" id="email"  value="{{data.email}}" placeholder="Email">
+						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+					</div> --}}
+					<p class="text-danger" id="passworderror" ></p>
+					<div class="wrap-input100 " data-validate="Enter password">
+						<input class="input100" type="number" name="otp" id="password" value="{{data.password}}" placeholder="OTP">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+				
+                       <p class="text-danger" id="passworderror" ></p>
+					{{!-- <div class="contact100-form-checkbox">
+						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+						<label class="label-checkbox100" for="ckb1">  
+							Remember me
+						</label>
+					</div> --}}
+					
+                    <p class=" text-center  mb-3" style="color: red;">{{forgototperr}}</p>
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							Login
+						</button>
+					</div>
+
+					{{!-- <div class="text-center p-t-50">
+						<a class="txt1" href="/forgotPassword">
+							Forgot Password?
+						</a>
+					</div>
+                    	<div class="text-center">
+						<a class="txt1" style="text-decoration: underline;" href="/users-signup">
+							signup
+						</a>
+					</div>
+						<div class="text-center">
+						<a class="txt1" style="text-decoration: underline;" href="/user-otp">
+							OTP Login
+						</a>
+					</div> --}}
+					
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="/user login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/user login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/endor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/user login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/user login/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/user login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/user login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/user login/js/main.js"></script>
+    <script src="javascripts/login.js"></script>
+
+</body>
+</html>
