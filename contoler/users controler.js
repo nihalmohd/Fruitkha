@@ -252,16 +252,16 @@ const checkout = async function (req, res) {
 }
 
 const showaddress = async function (req, res) {
-  user = req.session.user
-  if (user) {
+  User = req.session.user
+  if (User) {
     userId = req.session.user._id
-    let user = await usersdata.findOne({ _id: new ObjectId(userId) }).lean()
-    if(user.address.length==0){
+    let User = await usersdata.findOne({ _id: new ObjectId(userId) }).lean()
+    if(User.address?.length==0){
       res.redirect('/user/profile')
     }else{
-      selectAddress = user.address
+      selectAddress = User.address
       // console.log(selectAddress);
-      res.render('show-address', { selectAddress })
+      res.render('show-address', { selectAddress,User })
     }
   } else {
     res.redirect('/users-login')
@@ -282,11 +282,11 @@ const addressPass = async function (req, res) {
 
 }
 const userProfile = async function (req, res) {
-  user = req.session.user
-  if (user) {
+  User = req.session.user
+  if (User) {
     UserId = req.session.user._id
     let userProfile = await usersdata.findOne({ _id: new ObjectId(UserId)}).lean()
-    res.render('userProfile', {userProfile})
+    res.render('userProfile', {userProfile,User})
   } else {
     res.redirect('/users-login')
   }
@@ -408,7 +408,7 @@ const removeWishList=async function(req,res){
 const orders=async function(req,res){
   User=req.session.user
   if(User){
-    userid=user._id
+    userid=User._id
     
     let userOrderdetails= await order.find({userId:userid}).lean()
     console.log(userOrderdetails);
