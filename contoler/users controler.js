@@ -169,9 +169,12 @@ const cart = async function (req, res) {
     if(couponid){
       let findcoupon=await Coupencollections.find({coupen:couponid})
       console.log(findcoupon);
+      minimum=findcoupon[0].minPurchase
+      
     }
     res.render('usersCart', { cartAllDisplay, totalprice ,couponerr,couponadd})
     couponerr==null
+    couponadd==null
   } else {
     res.redirect('/users-login')
   }
@@ -911,15 +914,24 @@ const addcoupen=async function(req,res){
     let coupenChecking=await Coupencollections.findOne({coupen:couponid})
     console.log(coupenChecking);
   if(coupenChecking){
-    const date=new Date().toLocaleString()
+    const expire=new Date(coupenChecking.expiredate)
+    console.log(expire);
+    const date=new Date()
     console.log(date);
-    if(date > coupenChecking.expiredate&&coupenChecking.status==true){
+    const exp=(expire-date)/1000*60*60*24
+    if(coupenChecking.status){
+    if(exp < 0 ){
         req.session.couponid=couponid
         couponadd="Coupon Added"
+        res.redirect("/cart")
     }else{
-      couponerr="invalid coupon(Its expired) "
+      couponerr="invalid coupon"
       res.redirect('/cart')
     }
+  }else{
+    res.redirect("/cart")
+    couponerr="No coupon avalible now"
+  }
   }else{
     couponerr="Invalid Coupon"
     res.redirect('/cart')           
