@@ -44,6 +44,8 @@ let erremail
 var forgotOTP
 var forgototperr
 var setPasserr
+var couponerr
+ var couponadd
 // user get methods
 const usershome = async function (req, res, next) {
   const user = req.session.user
@@ -163,9 +165,13 @@ const cart = async function (req, res) {
       },
       { $project: { item: 1, quantity: 1, products: { $arrayElemAt: ['$productdetails', 0] } } }
     ])
-    // console.log('Niahlllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll');
-
-    res.render('usersCart', { cartAllDisplay, totalprice })
+    couponid=req.session.couponid
+    if(couponid){
+      let findcoupon=await Coupencollections.find({coupen:couponid})
+      console.log(findcoupon);
+    }
+    res.render('usersCart', { cartAllDisplay, totalprice ,couponerr,couponadd})
+    couponerr==null
   } else {
     res.redirect('/users-login')
   }
@@ -897,24 +903,26 @@ const createNewPassword=async function(req,res){
     }
   }
 
-const addcoupen=function(req,res){
+const addcoupen=async function(req,res){
   couponid=req.body.couponcode
   console.log(req.body);
   
   if(couponid){
-    let coupenChecking=Coupencollections.findOne({coupen:couponid})
+    let coupenChecking=await Coupencollections.findOne({coupen:couponid})
     console.log(coupenChecking);
   if(coupenChecking){
     const date=new Date().toLocaleString()
-    if(date<coupenChecking.expiredate&&coupenChecking==true){
+    console.log(date);
+    if(date > coupenChecking.expiredate&&coupenChecking.status==true){
         req.session.couponid=couponid
+        couponadd="Coupon Added"
     }else{
-      couponerr="invalid coupon "
+      couponerr="invalid coupon(Its expired) "
       res.redirect('/cart')
     }
   }else{
     couponerr="Invalid Coupon"
-    res.redirect('/cart')
+    res.redirect('/cart')           
   }
   }else{
     couponerr="Coupon code is required"

@@ -235,8 +235,11 @@
 					<div class="coupon-form-wrap">
 						<form action="/addcoupon" method="post">
 							<p><input type="text" name="couponcode" placeholder="Coupon"></p>
+							<p class="text-danger">{{couponerr}}</p>
+							<p class="text-success">{{couponadd}}</p>
 							<p><input type="submit" value="Apply"></p>
 						</form>
+						
 					</div>
 				</div>
 
