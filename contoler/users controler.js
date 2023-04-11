@@ -143,6 +143,8 @@ const logout = function (req, res) {
 
 
 const cart = async function (req, res) {
+  let totalprice
+  
   user = req.session.user
 
 
@@ -168,13 +170,27 @@ const cart = async function (req, res) {
     couponid=req.session.couponid
     if(couponid){
       let findcoupon=await Coupencollections.find({coupen:couponid})
-      console.log(findcoupon);
+      console.log("dfsgsdfgfgdfgfssddsfdssdsdd",findcoupon);
       minimum=findcoupon[0].minPurchase
-      
+      console.log("hiiiiiiiiii",totalprice);
+      if(totalprice[0].total <findcoupon[0].minPurchase){
+        couponerr = "Please Buy Upto"+minimum
+      }else{
+        let decresprice=findcoupon[0].discountvalue
+        console.log("hanishhhhhhhhhhhhh",decresprice);
+        console.log("fidingggggg inside else",findcoupon);
+        console.log("helloooooooo",totalprice)
+        totalprice[0].total-=decresprice
+        console.log(totalprice[0].total);
+        
+         couponadd="Coupon Added Successful"
+       await usersdata.updateOne({_id:userId},{$addToSet:{coupon:couponid}})
+      } 
     }
-    res.render('usersCart', { cartAllDisplay, totalprice ,couponerr,couponadd})
+    res.render('usersCart', { cartAllDisplay, totalprice,couponerr,couponadd})
     couponerr==null
     couponadd==null
+    req.session.couponid==null
   } else {
     res.redirect('/users-login')
   }
@@ -215,7 +231,7 @@ const addtocart = async function (req, res) {
 
 }
 
-const deletecart = async function (req, res) {
+const deletecart = async function (req, res) {  
   cartdeleteid = req.params.id
   carttitemid = req.params.item
   // console.log(cartdeleteid);
@@ -920,9 +936,8 @@ const addcoupen=async function(req,res){
     console.log(date);
     const exp=(expire-date)/1000*60*60*24
     if(coupenChecking.status){
-    if(exp < 0 ){
+    if(exp > 0 ){
         req.session.couponid=couponid
-        couponadd="Coupon Added"
         res.redirect("/cart")
     }else{
       couponerr="invalid coupon"
