@@ -1,47 +1,7 @@
 {{>userHeader}}
-	<!-- end header -->
-
-	<!-- search area -->
-	{{!-- <div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> --}}
-	<!-- end search area -->
-
-	<!-- hero area -->
+	
 	<div class="homepage-slider">
-		<!-- single home slider -->
-		{{!-- <div style="background-image: url(/BannerImage/download.jpeg.jpg); background-repeat: no-repeat; background-size: cover;">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
-						<div class="hero-text">
-							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh & Organic</p>
-								<h1>c</h1>
-								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Fruit Collection</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>+
-		</div> --}}
-		<!-- single home slider -->
+	
          {{#each displaybanner}}
 		<div style="background-image: url(/BannerImage/{{BannerImage.[0]}}); background-repeat: no-repeat; background-size: cover;">
 			<div class="container">
@@ -62,25 +22,7 @@
 			</div>
 		</div>
 		{{/each}}
-		<!-- single home slider -->
-		{{!-- <div class="single-homepage-slider homepage-bg-3">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-10 offset-lg-1 text-right">
-						<div class="hero-text">
-							<div class="hero-text-tablecell">
-								<p class="subtitle">Mega Sale Going On!</p>
-								<h1>Get December Discount</h1>
-								<div class="hero-btns">
-									<a href="" class="boxed-btn">Visit Shop</a>
-									<a href="" class="bordered-btn">Contact Us</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> --}}
+		
 	</div>
 	<!-- end hero area -->
 
@@ -164,26 +106,7 @@
 				{{/if}}
 				{{/each}}
 				</div>
-				{{!-- <div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt=""></a>
-						</div>
-						<h3>Berry</h3>
-						<p class="product-price"><span>Per Kg</span> 70₹ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div> --}}
-				{{!-- <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt=""></a>
-						</div>
-						<h3>Lemon</h3>
-						<p class="product-price"><span>Per Kg</span> 35₹ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div> --}}
+
 			
 		</div>
 	</div>
@@ -230,7 +153,7 @@
 							</div>
 						</div>
 					</div>
-					<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					{{!-- <a href="#" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a> --}}
 				</div>
 			</div>
 		</div>
@@ -304,7 +227,7 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-bg">
-						<a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" class="video-play-btn popup-youtube"><i
+						<a href="#" class="video-play-btn popup-youtube"><i
 								class="fas fa-play"></i></a>
 					</div>
 				</div>
@@ -317,7 +240,7 @@
 							sapien sed, interdum velit. Nam eu molestie lorem.</p>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente facilis illo repellat
 							veritatis minus, et labore minima mollitia qui ducimus.</p>
-						<a href="about.html" class="boxed-btn mt-4">know more</a>
+						<a href="#" class="boxed-btn mt-4">know more</a>
 					</div>
 				</div>
 			</div>
@@ -330,7 +253,7 @@
 		<div class="container">
 			<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
 			<div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-			<a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+			<a href="/user/shop" class="cart-btn btn-lg">Shop Now</a>
 		</div>
 	</section>
 	<!-- end shop banner -->

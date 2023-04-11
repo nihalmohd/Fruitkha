@@ -24,6 +24,10 @@ const usersceama=new mongoose.Schema({
     coupon:{
         type:Array,
         required:true
+    },
+    wallet:{
+      type:Number,
+      required:true  
     }
 })
 

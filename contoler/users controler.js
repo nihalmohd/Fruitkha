@@ -45,7 +45,9 @@ var forgotOTP
 var forgototperr
 var setPasserr
 var couponerr
- var couponadd
+var couponadd
+var decresprice
+
 // user get methods
 const usershome = async function (req, res, next) {
   const user = req.session.user
@@ -143,14 +145,14 @@ const logout = function (req, res) {
 
 
 const cart = async function (req, res) {
-  let totalprice
   
-  user = req.session.user
+  
+  User = req.session.user
 
 
   // console.log(userId);
-  if (user) {
-    const userId = user._id
+  if (User) {
+    const userId = User._id
     Total.cartTotal(userId).then((data) => {
       totalprice = data
     })
@@ -176,20 +178,21 @@ const cart = async function (req, res) {
       if(totalprice[0].total <findcoupon[0].minPurchase){
         couponerr = "Please Buy Upto"+minimum
       }else{
-        let decresprice=findcoupon[0].discountvalue
+        decresprice=findcoupon[0].discountvalue
         console.log("hanishhhhhhhhhhhhh",decresprice);
         console.log("fidingggggg inside else",findcoupon);
         console.log("helloooooooo",totalprice)
-        totalprice[0].total-=decresprice
+        totalprice[0].total-=decresprice   
         console.log(totalprice[0].total);
         
          couponadd="Coupon Added Successful"
        await usersdata.updateOne({_id:userId},{$addToSet:{coupon:couponid}})
       } 
     }
-    res.render('usersCart', { cartAllDisplay, totalprice,couponerr,couponadd})
-    couponerr==null
-    couponadd==null
+    
+    res.render('usersCart', { cartAllDisplay,User, totalprice,couponerr,couponadd})
+    couponerr=null
+    couponadd=null
     req.session.couponid==null
   } else {
     res.redirect('/users-login')
@@ -241,7 +244,7 @@ const deletecart = async function (req, res) {
 }
 
 const checkout = async function (req, res) {
-
+  couponid=req.session.couponid
   user = req.session.user
   if (user) {
     displayAddress = req.session.selected
@@ -261,8 +264,13 @@ const checkout = async function (req, res) {
       { $group: { _id: null, total: { $sum: { $multiply: ['$quantity', '$products.price'] } } } }
     ])
 
-    // console.log(totalprice[0].total);  
-    const totalpass = totalprice[0].total
+    // console.log(totalprice[0].total); 
+    if(couponid){
+       totalpass = totalprice[0].total-=decresprice
+    } else{
+       totalpass = totalprice[0].total
+    }
+    
   
     res.render('checkout', { totalpass, user, displayAddress })
   } else {
@@ -653,6 +661,7 @@ const changeproductquantity = async function (req, res, next) {
 const placeorder = async function (req, res) {
   console.log(req.body);
   userid = req.body.userId
+ let Couponid=req.session.couponid
   let cart = await userCart.findOne({ user: userid }).lean()
   console.log(cart);
   let totalprice = await Total.cartTotal(userid)
@@ -707,7 +716,12 @@ productCount=products.length;
       res.json({ codSuccess: true })
     })
   } else {
-    let totalAmount = totalprice[0].total   
+     if(Couponid){
+       totalAmount = totalprice[0].total-=decresprice 
+     }else{
+       totalAmount = totalprice[0].total
+     }
+     
     orderId = uuid.v4()
     var options = {
       amount: totalAmount * 100,
@@ -743,7 +757,6 @@ const verifyPayment = async function (req, res) {
 
     for(i=0;i<orderOnline.products[0].products.length;i++){
       orderOnline.products[0].products[i].paymentId=req.body['payment[razorpay_payment_id]']
-
     }
 
 
@@ -925,7 +938,6 @@ const createNewPassword=async function(req,res){
 const addcoupen=async function(req,res){
   couponid=req.body.couponcode
   console.log(req.body);
-  
   if(couponid){
     let coupenChecking=await Coupencollections.findOne({coupen:couponid})
     console.log(coupenChecking);
@@ -954,8 +966,7 @@ const addcoupen=async function(req,res){
   }else{
     couponerr="Coupon code is required"
     res.redirect("/cart")
-  }
-  
+  }  
 }
 
 
