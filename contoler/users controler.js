@@ -34,7 +34,7 @@ var OTP
 let userlogindetails
 let totalprice
 let cartAllDisplay
-let orderObj
+// let orderObj
 let matingerr
 let Emailexisterr
 let passdata
@@ -666,7 +666,7 @@ const placeorder = async function (req, res) {
   const index = uuid.v4()
   let status = req.body.payment === "COD" ? "Placed" : "Placed"
   let paymentstatus=req.body.payment==="COD" ? "not paid":"paid"
-  const orderObj = {
+   orderObj = {
     deliverydetails: {
       index: index,
       fullname: req.body.fullname,
@@ -700,16 +700,14 @@ productCount=products.length;
     })  
   }
   req.session.orderObject=orderObj
+  console.log("req session is printing",req.session.orderObject);
   usersdata.updateOne({ _id: new ObjectId(userid) }, { $push: { address: orderObj.deliverydetails } })
 
-   
   if (req.body.payment === "COD") {
     await order.create(orderObj).then(async (response) => {
       let Orderdetails = await order.findOne().lean()
       let orderId = Orderdetails.id
-      //  console.log(Orderdetails.id);
-      // const orderId = response.insertedId
-      // console.log("order",orderId);  
+      
       await userCart.deleteOne({ user: new ObjectId(userid) })
       res.json({ codSuccess: true })
     })
@@ -721,7 +719,7 @@ productCount=products.length;
      }
      
     orderId = uuid.v4()
-    var options = {
+    var options = {      
       amount: totalAmount * 100,
       currency: "INR",
       receipt: "" + orderId
@@ -749,11 +747,12 @@ const verifyPayment = async function (req, res) {
   hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
   hmac=hmac.digest('hex')
   if(hmac==details['payment[razorpay_signature]']){
-   let orderOnline=req.session.orderObject
-    item=new ObjectId(orderOnline.products.item)
-    _id=new ObjectId(orderOnline.products._id)
-
-    console.log(orderOnline);
+    console.log("order object:",orderObj);
+   let orderOnline=orderObj
+    // item=new ObjectId(orderOnline.products.item)
+    // _id=new ObjectId(orderOnline.products._id)
+     
+    console.log("orderOnline:",orderOnline);
     orderOnline.products[0].products.paymentId=uuid.v4() 
 
     for(i=0;i<orderOnline.products[0].products.length;i++){
