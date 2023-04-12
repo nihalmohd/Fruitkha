@@ -176,6 +176,8 @@ const orderdeliverd= async function(req,res){
   deliverd=req.body.value
   orderDeliverdid=req.params.id
   await order.updateOne({_id:new ObjectId(orderDeliverdid)},{$set:{status:deliverd}})
+  salesDate=now=new Date().toLocaleDateString()
+  await order.updateOne({_id:orderDeliverdid},{deliveryDate:salesDate})
   res.redirect('/admin/order')
 }
 

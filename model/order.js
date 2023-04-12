@@ -39,6 +39,10 @@ paymentStatus:{
 month:{
     type:Number,
     required:true
+},
+deliveryDate:{
+    type:String,
+    required:true
 }
 
 })
