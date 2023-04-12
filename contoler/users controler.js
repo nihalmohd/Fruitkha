@@ -172,16 +172,13 @@ const cart = async function (req, res) {
     couponid=req.session.couponid
     if(couponid){
       let findcoupon=await Coupencollections.find({coupen:couponid})
-      console.log("dfsgsdfgfgdfgfssddsfdssdsdd",findcoupon);
+      
       minimum=findcoupon[0].minPurchase
       console.log("hiiiiiiiiii",totalprice);
       if(totalprice[0].total <findcoupon[0].minPurchase){
         couponerr = "Please Buy Upto"+minimum
       }else{
         decresprice=findcoupon[0].discountvalue
-        console.log("hanishhhhhhhhhhhhh",decresprice);
-        console.log("fidingggggg inside else",findcoupon);
-        console.log("helloooooooo",totalprice)
         totalprice[0].total-=decresprice   
         console.log(totalprice[0].total);
         
@@ -502,7 +499,8 @@ const usersposthome = async function (req, res) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    status: true
+    status: true,
+    wallet:0
   }
   let emailExist=await usersdata.findOne({email:Email}).lean()
   if(emailExist===null){
@@ -751,7 +749,10 @@ const verifyPayment = async function (req, res) {
   hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
   hmac=hmac.digest('hex')
   if(hmac==details['payment[razorpay_signature]']){
-    orderOnline=req.session.orderObject
+   let orderOnline=req.session.orderObject
+    item=new ObjectId(orderOnline.products.item)
+    _id=new ObjectId(orderOnline.products._id)
+
     console.log(orderOnline);
     orderOnline.products[0].products.paymentId=uuid.v4() 
 
@@ -792,6 +793,15 @@ const cancel=async function(req,res){
   await order.updateOne({_id:new ObjectId(ordercancelId)},{$set:{status:Cancelled}})
   res.redirect('/orders')
 }
+
+const ReturnProcessing=async function(req,res){
+  let returnProcessingid=req.params.id
+  returnProcessing=req.body.value
+  await order.updateOne({_id:new ObjectId(returnProcessingid)},{$set:{status:returnProcessing}})
+  res.redirect('/orders')
+}
+
+
 const multiaddress=async function(req,res){
   console.log(req.body);
   user=req.session.user
@@ -1005,6 +1015,7 @@ module.exports = {
   orders,
   ordersDetails,
   cancel,
+  ReturnProcessing,
   multiaddress,
   changePassword,
   createNewPassword,

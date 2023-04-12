@@ -28,18 +28,24 @@
                         <button type="button" class="btn btn-outline-primary btn-view-order mb-2 mb-md-0"
                             onclick="location.href='/ordersDetails/{{_id}}'">View Order</button>
                         {{#if (eq status "Deliverd")}}
-                        <h6 style="color: rgb(97, 239, 27);">Order Delivered</h6>
+                        <h6 style="color:rgb(12, 247, 12));">Order Delivered</h6>
                         <div class="d-flex justify-content-end align-items-center">
                             <div class="p-4" style="margin-top: 10px;">
                                 <form action="/Return/{{_id}}" method="post">
-                                    <input type="text" name="value" value="Cancelled" hidden>
+                                    <input type="text" name="value" value="Return Processing" hidden>
                                     <button type="submit" class="btn btn-outline-warning">Return Order</button>
                                 </form>
                             </div>
                         </div>
                         {{else}}
+                         {{#if (eq status "Return Processing")}}
+                        <h6 style="color: rgb(255, 255, 11));">Return Processing...</h6>
+                            {{else}}
+                            {{#if (eq status "Returned")}}
+                        <h6 style="color: rgb(41, 170, 41));">Retuned Successfull</h6>
+                            {{else}}
                         {{#if (eq status "Cancelled")}}
-                        <h6 style="color: red;">Order Cancelled</h6>
+                        <h6 style="color: rgb(215, 17, 17);">Order Cancelled</h6>
                         {{else}}
                         <div class="d-flex justify-content-end align-items-center">
                             <div class="p-4" style="margin-top: 10px;">
@@ -49,6 +55,8 @@
                                 </form>
                             </div>
                         </div>
+                        {{/if}}
+                        {{/if}}
                         {{/if}}
                         {{/if}}
                     </div>

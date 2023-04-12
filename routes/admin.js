@@ -39,6 +39,7 @@ router.get('/admin/sales',admin.salesReport)
 // router.get('/edit/:id',admin.)
 
 // Post methode\
+router.post('/returnconfirm/:id',admin.orderReturned)
 router.post('/cancelled/:id',admin.orderCancel)
 router.post('/deliverd/:id',admin.orderdeliverd)
 router.post('/shipping/:id',admin.ordershipping)

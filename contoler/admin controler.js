@@ -143,6 +143,7 @@ const orderdProducts=async function(req,res){
   let orderid=req.params.id
   let orderstatus=await order.findOne({_id:new ObjectId(orderid)}).lean()
   let ordetprodata=await order.aggregate([{$match:{_id:new ObjectId(orderid)}},{$unwind:"$products"},{$project:{item:'$products.item',quantity:'$products.quantity'}},{$lookup:{from:'addproducts',localField:'item',foreignField:'_id',as:'Details'}},{$project:{item:1,quantity:1,Details:{$arrayElemAt:['$Details',0]}}}])
+  console.log(ordetprodata);
   res.render('orderproduct',{ordetprodata,orderstatus,orderid})
 }
 const admincoupen=async function(req,res){
@@ -177,13 +178,8 @@ const orderdeliverd= async function(req,res){
   await order.updateOne({_id:new ObjectId(orderDeliverdid)},{$set:{status:deliverd}})
   res.redirect('/admin/order')
 }
-const orderCancel=async function(req,res){
-  console.log(req.body);
-  cancelled=req.body.value
-  ordercancelId=req.params.id
-  await order.updateOne({_id:new ObjectId(ordercancelId)},{$set:{status:cancelled}})
-  res.redirect('/admin/order')
-}
+
+
 
 const chartData=async function(req,res){
   console.log("apiiiiiiiiiii");
@@ -326,6 +322,27 @@ const coupeninsert= async function(req,res){
    res.redirect('/admin/coupen')
 }
 
+const orderCancel=async function(req,res){
+  console.log(req.body);
+  cancelled=req.body.value
+  ordercancelId=req.params.id
+  await order.updateOne({_id:new ObjectId(ordercancelId)},{$set:{status:cancelled}})
+  res.redirect('/admin/order')
+}
+
+const orderReturned=async function(req,res){
+  returned=req.body.value
+  orderReturnedid=req.params.id
+  let findpro=await order.findOne({_id:new ObjectId(orderReturnedid)})
+  RetunAmount=findpro.TotalAmount
+  retuneduser=findpro.userId
+  console.log(RetunAmount);
+  await order.updateOne({_id:new ObjectId(orderReturnedid)},{$set:{status:returned}})
+  await usersdata.updateOne({_id:new ObjectId(retuneduser)},{$inc:{wallet:RetunAmount}})
+  res.redirect('/admin/order')
+}
+
+
   module.exports={
     adminlogin,
     adminhome,
@@ -360,6 +377,7 @@ const coupeninsert= async function(req,res){
     ordershipping,
     orderdeliverd,
     orderCancel,
+    orderReturned,
     chartData,
     salesReport
 
