@@ -190,7 +190,7 @@ const cart = async function (req, res) {
     res.render('usersCart', { cartAllDisplay,User, totalprice,couponerr,couponadd})
     couponerr=null
     couponadd=null
-    req.session.couponid==null
+    req.session.couponid=null
   } else {
     res.redirect('/users-login')
   }
