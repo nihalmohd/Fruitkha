@@ -206,9 +206,10 @@
 												<input type="radio" name="payment" value="online payment">
 												<labe class="ms-2 me-5">Online Payment</label>
 												<p class="text-danger text-center w-100"></p>
-     
-
-
+                                                 {{#if walletPass}}
+												 <input type="radio" name="payment" value="Wallet">
+												<labe class="ms-2 me-5">Wallet</label>
+                                                {{/if}}
 										</div>
 										<a href="/showAddress" style="position: relative;left: 22px;" >Show Address</a>
 									</div>
@@ -259,6 +260,25 @@
 
 				<div class="col-lg-4">
 					<div class="order-details-wrap">
+						{{#if walletPass}}
+						<table class="order-details">
+							<thead>
+								<tr>
+									<th>Wallet Details</th>
+									<th>Amount</th>
+								</tr>
+							</thead>
+							<tbody class="order-details-body">
+								</tbody>
+							<tbody class="checkout-details">
+								<tr>
+									<td>Amount</td>
+									<td>{{walletPass}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						{{/if}}
 						<table class="order-details">
 							<thead>
 								<tr>

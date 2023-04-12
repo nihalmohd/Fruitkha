@@ -246,6 +246,8 @@ const checkout = async function (req, res) {
   if (user) {
     displayAddress = req.session.selected
     userId = req.session.user._id
+     let walletexist=await usersdata.findOne({_id:userId})
+     let walletPass=walletexist.wallet 
     let totalprice = await userCart.aggregate([
       { $match: { user: userId } }, { $unwind: '$products' },
       { $project: { item: "$products.item", quantity: "$products.quantity" } },
@@ -267,9 +269,12 @@ const checkout = async function (req, res) {
     } else{
        totalpass = totalprice[0].total
     }
+    if(totalpass>walletPass){
+      walletPass=0
+    }
     
   
-    res.render('checkout', { totalpass, user, displayAddress })
+    res.render('checkout', { totalpass, user, displayAddress,walletPass})
   } else {
     res.redirect('/users-login')
   }
@@ -711,7 +716,7 @@ productCount=products.length;
       await userCart.deleteOne({ user: new ObjectId(userid) })
       res.json({ codSuccess: true })
     })
-  } else {
+  } else if(req.body.payment==="online payment"){
      if(Couponid){
        totalAmount = totalprice[0].total-=decresprice 
      }else{
@@ -733,6 +738,19 @@ productCount=products.length;
       }
     })
 
+  }else{
+    await order.create(orderObj).then(async (response) => {
+      // let Orderdetails = await order.findOne().lean()
+      // let orderId = Orderdetails.id
+      let wallettotal=totalprice[0].total
+      await usersdata.updateOne({_id: new ObjectId(userid)},{$inc:{wallet:-wallettotal}}).then((d)=>{
+        console.log(d);
+      })
+      
+      
+      await userCart.deleteOne({ user: new ObjectId(userid) })
+      res.json({ codSuccess: true })
+    })
   }
 
 }
