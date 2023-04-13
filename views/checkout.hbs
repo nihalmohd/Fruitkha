@@ -594,7 +594,6 @@
 				method: 'post',
 				data: $('#checkout').serialize(),
 				success: (response) => {
-					alert(response)
 					if (response.codSuccess) {
 						location.href = "/orderSuccess"
 					}else{
