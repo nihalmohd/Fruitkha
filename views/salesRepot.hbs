@@ -1,9 +1,9 @@
 {{>adminHeader}}
 <div class="row">
 	<div class="p-5">
-<a href="" class="btn btn-primary btn-lg btn-block">Yearly Sales Report</a>
-<a href="" class="btn btn-secondary btn-lg btn-block">Monthly Sales Report</a>
-<a href="" class="btn btn-primary btn-lg btn-block">Daily Sales Report</a>
+{{!-- <a href="/admin/salesreport/?name=year" class="btn btn-primary btn-lg btn-block">Yearly Sales Report</a> --}}
+<a href="/admin/salesreport/?name=mounth" class="btn btn-secondary btn-lg btn-block">Monthly Sales Report</a>
+<a href="/admin/salesreport/?name=day" class="btn btn-primary btn-lg btn-block">Daily Sales Report</a>
 </div>
 </div>
 <div class="card-body">
@@ -15,61 +15,28 @@
 
 
           <th>Date</th>
+		   <th>Delivery Date</th>
           <th>Orderd User</th>
           <th>ProductID</th>
           <th>Quantity</th>
           <th>Price</th>
           <th>Total Price</th>
-          <th>
-            {{#if orderid}}
-           
-            <div class="dropdown">
-              <a class="btn btn-primary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                change status
-              </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form action="/admin/shipping/{{orderid}}" method="post">
-                  <input type="text" name="value" value="shipped" hidden>
-                  <button type="submit" class="dropdown-item">shipping</button>
-                </form>
-                <form action="/admin/deliverd/{{orderid}}" method="post">
-                  <input type="text" name="value" value="Deliverd" hidden>
-                  <button type="submit" class="dropdown-item">delivered</button>
-                </form>
-                <form action="/admin/cancelled/{{orderid}}" method="post">
-                  <input type="text" name="value" value="Cancelled" hidden>
-                  <button type="submit" class="dropdown-item">Cancel</button>
-                </form>
-                 <form action="/admin/returnconfirm/{{orderid}}" method="post">
-                  <input type="text" name="value" value="Returned" hidden>
-                  <button type="submit" class="dropdown-item">Return Confirmed</button>
-                </form>
-              </div>
-              
-
-            </div>
-
-            {{else}}
-            status
-            {{/if}}
-          </th>
-
-
+          
         </tr>
       </thead>
-      {{#each ordetprodata}}
+      {{#each allsalesreport}}
       <tbody>
 
         <tr>
 
-          <td><img src="/product-images/{{Details.image.[0]}}" alt="" width="100px"></td>
-          <td>{{Details.productname}}</td>
-          <td>{{Details.catogory}}</td>
-          <td>{{Details.brand}}</td>
-          <td>{{Details.price}}</td>
-          <td>{{quantity}}</td>
-          <td>{{../orderstatus.status}}</td>
+          <td>{{orderdate}}</td>
+          <td>{{deliveryDate}}</td>
+          <td>{{userID}}</td>
+          <td>{{productid}}</td>
+          <td>{{Quantity}}</td>
+          <td>{{products.price}}</td>
+		  <td>{{TotalAmount}}</td>
+          
 
           <!-- Example split danger button -->
 

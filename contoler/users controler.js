@@ -689,6 +689,7 @@ const placeorder = async function (req, res) {
     paymentStatus:paymentstatus,
     products:cartAllDisplay,
     TotalAmount: totalprice[0].total,
+    deliveryDate:new Date().toLocaleString(),
     orderdate: new Date().toLocaleString(),
     month:new Date().getMonth()+1,
     // DelivertDare:orderdate+new Date(),

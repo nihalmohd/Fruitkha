@@ -137,6 +137,7 @@ const visibleBanner= async function(req,res){
 
 const orderPage=async function(req,res){
  let orderdetails=await order.find().lean()
+
   res.render('adminOrder',{orderdetails})
 }
 const orderdProducts=async function(req,res){
@@ -201,9 +202,109 @@ const chartData=async function(req,res){
 }
 
   
-const salesReport=function(req,res){
-  res.render("salesRepot")
+const salesReport=async function(req,res){
+  allsalesreport=await order.aggregate([
+    {
+      $unwind:"$products"
+    },
+    {
+      $match:{status:'Deliverd'}
+    },
+    {
+      $project:{products:"$products.products",Quantity:"$products.quantity",price:"$products.price",TotalAmount:"$TotalAmount", userID:"$products._id",productid:"$products.item",orderdate:"$orderdate",deliveryDate:"$deliveryDate" }
+    }
+  ])
+  if(req.session.reports){
+    allsalesreport=req.session.reports
+    res.render("salesRepot",{allsalesreport})
+    req.session.reports=null
+  }else{
+      // console.log(allsalesreport);
+  res.render("salesRepot",{allsalesreport})
 }
+
+  }
+const dateWisesalesReport= async function(req,res){
+  salesDate=req.query.name
+  if(salesDate=="mounth"){
+
+    const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).toLocaleDateString();
+        const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).toLocaleDateString();
+      
+        // console.log(firstDayOfMonth);
+        // console.log(lastDayOfMonth);
+
+      
+        monthlysalesReport = await order.aggregate([
+
+            {
+                $unwind: "$products"
+            },
+            {
+                $match: { status: "Deliverd" }
+            },
+            {
+                $match: {
+                  deliveryDate: { $gte: firstDayOfMonth, $lte: lastDayOfMonth }
+                }
+            }, {
+              $project:{products:"$products.products",Quantity:"$products.quantity",price:"$products.price",TotalAmount:"$TotalAmount", userID:"$products._id",productid:"$products.item",orderdate:"$orderdate",deliveryDate:"$deliveryDate" }
+            }
+          
+        ])
+       
+       console.log("hlooooooooooooo",monthlysalesReport);
+
+     req.session.reports=monthlysalesReport
+  }else{
+    salesParam = req.query.name
+    console.log(salesParam);
+    if (salesParam == "day") {
+       
+        const today = new Date();
+        const todayDate = today.toLocaleDateString();
+
+        // Get tomorrow's date
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const tomorrowDate = tomorrow.toLocaleDateString();
+
+        // Output the dates
+        console.log(todayDate);
+        console.log(tomorrowDate);
+
+
+
+         dailysalesReport = await order.aggregate([
+
+            {
+                $unwind: "$products"
+            },
+            {
+                $match: { status: "Deliverd" }
+            },
+            {
+                $match: {
+                  deliveryDate: { $gte: todayDate, $lte: tomorrowDate }
+                }
+            },  {
+              $project:{products:"$products.products",Quantity:"$products.quantity",price:"$products.price",TotalAmount:"$TotalAmount", userID:"$products._id",productid:"$products.item",orderdate:"$orderdate",deliveryDate:"$deliveryDate" }
+            }
+        ])
+
+      }
+      // console.log("hiiiiiiiiiii",dailysalesReport);
+      req.session.reports=dailysalesReport
+  }
+  // console.log(salesDate);
+  res.redirect("/admin/admin/sales")
+}
+
+
 
 
 
@@ -381,6 +482,7 @@ const orderReturned=async function(req,res){
     orderCancel,
     orderReturned,
     chartData,
-    salesReport
+    salesReport,
+    dateWisesalesReport
 
   }

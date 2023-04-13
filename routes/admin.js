@@ -34,6 +34,7 @@ router.get('/coupenenable/:id',admin.Visiblecoupen)
 router.get('/coupenremove/:id',admin.Visiblecoupen)
 router.get('/getChart-Data',admin.chartData)
 router.get('/admin/sales',admin.salesReport)
+router.get('/salesreport',admin.dateWisesalesReport)
 
 
 // router.get('/edit/:id',admin.)
