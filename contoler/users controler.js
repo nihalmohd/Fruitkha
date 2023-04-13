@@ -269,6 +269,11 @@ const checkout = async function (req, res) {
     } else{
        totalpass = totalprice[0].total
     }
+    userid=req.session.user._id
+    let cart= await userCart.findOne({_id:userid})
+    if(cart==null){
+      res.redirect("/user/shop")
+    }
     if(totalpass>walletPass){
       walletPass=0
     }
