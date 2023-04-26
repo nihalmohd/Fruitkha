@@ -330,7 +330,7 @@ const shop = async (req, res) => {
 
      if(req.session.showAll){
      req.session.category= null
-     
+
      }
      const categories = req.session.category;
     let category = await addcategory.find().lean()
@@ -340,6 +340,7 @@ const shop = async (req, res) => {
      
     } else {
       productlist = await addproduct.find().lean()
+      
        if(lowtohighsort){
         productlist=lowtohighsort
         req.session.lowtohigh=null
